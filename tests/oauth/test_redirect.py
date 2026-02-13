@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import uuid
+
 from CTFd.models import Teams, Users
 from CTFd.utils import set_config
 from tests.helpers import (
@@ -56,13 +58,13 @@ def test_oauth_configured_flow():
         # Users should be able to register now
         assert Users.query.count() == 2
         user = Users.query.filter_by(email="user@examplectf.com").first()
-        assert user.oauth_id == 1337
+        assert user.oauth_id == uuid.UUID("55dfc657-f96f-4b7f-97f6-0c5ac2471394")
         assert user.team_id == 1
 
         # Teams should be created
         assert Teams.query.count() == 1
         team = Teams.query.filter_by(id=1).first()
-        assert team.oauth_id == 1234
+        assert team.oauth_id == uuid.UUID("29d5e8f3-3a03-4f4b-b705-ecdf803652d7")
 
         client.get("/logout")
 
