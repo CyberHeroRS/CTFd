@@ -12,6 +12,8 @@ def build_model_filters(model, query, field, extra_columns=None):
 
             if type(column.type) == sqlalchemy.sql.sqltypes.Integer:
                 _filter = column.op("=")(query)
+            elif type(column.type) == sqlalchemy.sql.sqltypes.Uuid:
+                _filter = column.op("=")(query)
             else:
                 _filter = column.like(f"%{query}%")
             filters.append(_filter)
@@ -19,6 +21,8 @@ def build_model_filters(model, query, field, extra_columns=None):
             if field in extra_columns:
                 column = extra_columns[field]
                 if type(column.type) == sqlalchemy.sql.sqltypes.Integer:
+                    _filter = column.op("=")(query)
+                elif type(column.type) == sqlalchemy.sql.sqltypes.Uuid:
                     _filter = column.op("=")(query)
                 else:
                     _filter = column.like(f"%{query}%")

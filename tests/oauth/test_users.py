@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import uuid
+
 from CTFd.models import Users
 from CTFd.utils import set_config
 from tests.helpers import create_ctfd, destroy_ctfd, login_with_mlc, register_user
@@ -28,7 +30,7 @@ def test_num_users_oauth_limit():
             app,
             name="foobarbaz",
             email="foobarbaz@a.com",
-            oauth_id=111,
+            oauth_id=uuid.UUID("32d33abe-8c97-4514-a9bd-2d82883e030e"),
             scope="profile",
             raise_for_error=False,
         )
@@ -40,7 +42,7 @@ def test_num_users_oauth_limit():
             app,
             name="foobarbaz",
             email="foobarbaz@a.com",
-            oauth_id=111,
+            oauth_id=uuid.UUID("32d33abe-8c97-4514-a9bd-2d82883e030e"),
             scope="profile",
         )
         # The above login should have succeeded

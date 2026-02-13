@@ -1,29 +1,31 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import argparse
 import datetime
 import hashlib
 import random
-import argparse
+import uuid
+
+from faker import Faker
 
 from CTFd import create_app
-from CTFd.cache import clear_challenges, clear_config, clear_standings, clear_pages
+from CTFd.cache import clear_challenges, clear_config, clear_pages, clear_standings
 from CTFd.models import (
-    Users,
-    Teams,
+    Awards,
+    Brackets,
+    ChallengeFiles,
     Challenges,
+    Fails,
     Flags,
     Hints,
-    Awards,
-    ChallengeFiles,
-    Fails,
-    Solves,
-    Tracking,
-    Brackets,
-    Solutions,
     Ratings,
+    Solutions,
+    Solves,
+    Teams,
+    Tracking,
+    Users,
 )
-from faker import Faker
 
 fake = Faker()
 
@@ -229,7 +231,6 @@ if __name__ == "__main__":
         # Generating Teams
         print("GENERATING TEAMS")
         used = []
-        used_oauth_ids = []
         count = 0
         while count < TEAM_AMOUNT:
             name = gen_team_name()
@@ -239,10 +240,7 @@ if __name__ == "__main__":
                 if random_chance():
                     team.affiliation = gen_affiliation()
                 if random_chance():
-                    oauth_id = random.randint(1, 1000)
-                    while oauth_id in used_oauth_ids:
-                        oauth_id = random.randint(1, 1000)
-                    used_oauth_ids.append(oauth_id)
+                    oauth_id = uuid.uuid4()
                     team.oauth_id = oauth_id
                 if random_chance():
                     team.bracket_id = random.choice(TEAM_BRACKETS)
@@ -254,7 +252,6 @@ if __name__ == "__main__":
         # Generating Users
         print("GENERATING USERS")
         used = []
-        used_oauth_ids = []
         count = 0
         while count < USER_AMOUNT:
             name = gen_name()
@@ -266,10 +263,7 @@ if __name__ == "__main__":
                     if random_chance():
                         user.affiliation = gen_affiliation()
                     if random_chance():
-                        oauth_id = random.randint(1, 1000)
-                        while oauth_id in used_oauth_ids:
-                            oauth_id = random.randint(1, 1000)
-                        used_oauth_ids.append(oauth_id)
+                        oauth_id = uuid.uuid4()
                         user.oauth_id = oauth_id
                     if random_chance():
                         user.bracket_id = random.choice(USER_BRACKETS)
