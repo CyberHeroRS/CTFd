@@ -1,0 +1,24 @@
+name: Publish Cyberhero ctfd Images
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: github-actions-cyberhero
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & push image
+        uses: ./.github/actions/ctf-build-and-push-image
+        with:
+          context: .
+          dockerfile: Dockerfile
+          tags: |
+            registry.ctf.rs/cyberhero/ctfd-oauth:${{ github.ref_name }}
+            registry.ctf.rs/cyberhero/ctfd-oauth:latest

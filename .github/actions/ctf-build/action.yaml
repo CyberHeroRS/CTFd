@@ -1,0 +1,43 @@
+name: ctf build
+description: Builds docker image
+
+inputs:
+  context:
+    description: "Build context"
+    required: true
+
+  dockerfile:
+    description: "Dockerfile path (optional). Leave empty to use default Dockerfile in context."
+    required: false
+    default: ""
+
+  platforms:
+    description: "Target platforms"
+    required: false
+    default: "linux/amd64"
+
+  tags:
+    description: "Image tags (multiline)"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver-opts: |
+          image=registry.ctf.rs/docker-hub/moby/buildkit:master
+        buildkitd-config-inline: |
+          [registry."docker.io"]
+            mirrors = ["registry.ctf.rs/docker-hub"]
+
+    - name: Build image
+      uses: docker/build-push-action@v6
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        load: true
+        push: false
+        tags: ${{ inputs.tags }}
