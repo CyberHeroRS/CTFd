@@ -59,7 +59,11 @@ def test_num_teams_limit():
     )
     with app.app_context():
         set_config("num_teams", 1)
-        gen_team(app.db, member_count=1, oauth_id=1234)
+        gen_team(
+            app.db,
+            member_count=1,
+            oauth_id=uuid.UUID("29d5e8f3-3a03-4f4b-b705-ecdf803652d7"),
+        )
         login_with_mlc(
             app,
             name="foobar",
