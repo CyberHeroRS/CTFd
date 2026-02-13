@@ -53,7 +53,7 @@ def upgrade():
     op.create_table(
         "teams",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("oauth_id", sa.Integer(), nullable=True),
+        sa.Column("oauth_id", sa.UUID(as_uuid=True), nullable=True),
         sa.Column("name", sa.String(length=128), nullable=True),
         sa.Column("email", sa.String(length=128), nullable=True),
         sa.Column("password", sa.String(length=128), nullable=True),
@@ -122,7 +122,7 @@ def upgrade():
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("oauth_id", sa.Uuid(), nullable=True),
+        sa.Column("oauth_id", sa.UUID(as_uuid=True), nullable=True),
         sa.Column("name", sa.String(length=128), nullable=True),
         sa.Column("password", sa.String(length=128), nullable=True),
         sa.Column("email", sa.String(length=128), nullable=True),

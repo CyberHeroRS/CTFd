@@ -1,3 +1,5 @@
+import uuid
+
 import sqlalchemy
 
 
@@ -12,8 +14,13 @@ def build_model_filters(model, query, field, extra_columns=None):
 
             if type(column.type) == sqlalchemy.sql.sqltypes.Integer:
                 _filter = column.op("=")(query)
-            elif type(column.type) == sqlalchemy.sql.sqltypes.Uuid:
-                _filter = column.op("=")(query)
+            elif isinstance(column.type, sqlalchemy.UUID) or isinstance(
+                column.type, sqlalchemy.dialects.postgresql.UUID
+            ):
+                try:
+                    _filter = column.op("=")(uuid.UUID(str(query)))
+                except (ValueError, TypeError):
+                    _filter = sqlalchemy.sql.false()
             else:
                 _filter = column.like(f"%{query}%")
             filters.append(_filter)
@@ -22,8 +29,13 @@ def build_model_filters(model, query, field, extra_columns=None):
                 column = extra_columns[field]
                 if type(column.type) == sqlalchemy.sql.sqltypes.Integer:
                     _filter = column.op("=")(query)
-                elif type(column.type) == sqlalchemy.sql.sqltypes.Uuid:
-                    _filter = column.op("=")(query)
+                elif isinstance(column.type, sqlalchemy.UUID) or isinstance(
+                    column.type, sqlalchemy.dialects.postgresql.UUID
+                ):
+                    try:
+                        _filter = column.op("=")(uuid.UUID(str(query)))
+                    except (ValueError, TypeError):
+                        _filter = sqlalchemy.sql.false()
                 else:
                     _filter = column.like(f"%{query}%")
                 filters.append(_filter)
