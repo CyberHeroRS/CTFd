@@ -8,6 +8,7 @@ Create Date: 2018-11-05 01:06:24.495010
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy_utils import UUIDType
 
 # revision identifiers, used by Alembic.
 revision = "8369118943a1"
@@ -53,7 +54,7 @@ def upgrade():
     op.create_table(
         "teams",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("oauth_id", sa.UUID(as_uuid=True), nullable=True),
+        sa.Column("oauth_id", UUIDType(binary=False), nullable=True),
         sa.Column("name", sa.String(length=128), nullable=True),
         sa.Column("email", sa.String(length=128), nullable=True),
         sa.Column("password", sa.String(length=128), nullable=True),
@@ -122,7 +123,7 @@ def upgrade():
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("oauth_id", sa.UUID(as_uuid=True), nullable=True),
+        sa.Column("oauth_id", UUIDType(binary=False), nullable=True),
         sa.Column("name", sa.String(length=128), nullable=True),
         sa.Column("password", sa.String(length=128), nullable=True),
         sa.Column("email", sa.String(length=128), nullable=True),

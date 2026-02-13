@@ -1,12 +1,12 @@
 import datetime
 from collections import defaultdict
 
-import sqlalchemy as sa
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import column_property, validates
+from sqlalchemy_utils import UUIDType
 
 from CTFd.cache import cache
 
@@ -396,7 +396,7 @@ class Users(db.Model):
     __table_args__ = (db.UniqueConstraint("id", "oauth_id"), {})
     # Core attributes
     id = db.Column(db.Integer, primary_key=True)
-    oauth_id = db.Column(sa.UUID(as_uuid=True), unique=True)
+    oauth_id = db.Column(UUIDType(binary=False), unique=True)
     # User names are not constrained to be unique to allow for official/unofficial teams.
     name = db.Column(db.String(128))
     password = db.Column(db.String(128))
@@ -622,7 +622,7 @@ class Teams(db.Model):
     __table_args__ = (db.UniqueConstraint("id", "oauth_id"), {})
     # Core attributes
     id = db.Column(db.Integer, primary_key=True)
-    oauth_id = db.Column(sa.UUID(as_uuid=True), unique=True)
+    oauth_id = db.Column(UUIDType(binary=False), unique=True)
     # Team names are not constrained to be unique to allow for official/unofficial teams.
     name = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
