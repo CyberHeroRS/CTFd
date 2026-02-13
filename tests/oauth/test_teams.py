@@ -24,7 +24,7 @@ def test_team_size_limit():
         team = gen_team(
             app.db,
             member_count=1,
-            oauth_id=uuid.UUID("55dfc657-f96f-4b7f-97f6-0c5ac2471394"),
+            oauth_id=uuid.UUID("29d5e8f3-3a03-4f4b-b705-ecdf803652d7"),
         )
         team_id = team.id
         login_with_mlc(
